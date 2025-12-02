@@ -1,0 +1,361 @@
+openapi: 3.1.0
+info:
+  title: Online Bookstore API
+  description: API for managing an online bookstore including book categories, inventory, and sales
+  version: 1.0.0
+  contact:
+    email: support@bookstore.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+
+tags:
+  - name: categories
+    description: Book categories management
+  - name: books
+    description: Book inventory operations
+  - name: sales
+    description: Book sales transactions
+
+paths:
+  /categories:
+    get:
+      tags:
+        - categories
+      summary: List all book categories
+      operationId: retrieveCategories
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+    post:
+      tags:
+        - categories
+      summary: Create a new category
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryInput'
+      operationId: createNewCategory
+      responses:
+        '201':
+          description: Category created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+
+  /books:
+    get:
+      tags:
+        - books
+      summary: List all books
+      operationId: retrieveAllBooks
+      parameters:
+        - name: category
+          in: query
+          schema:
+            type: string
+          description: Filter books by category
+        - name: availability
+          in: query
+          schema:
+            type: string
+            enum: [in_stock, out_of_stock, all]
+      responses:
+        '200':
+          description: List of books
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Book'
+    post:
+      tags:
+        - books
+      summary: Add a new book
+      operationId: addNewBook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookInput'
+      responses:
+        '201':
+          description: Book added successfully
+
+  /books/{bookId}:
+    get:
+      tags:
+        - books
+      summary: Get book details
+      operationId: getBookDetails
+      parameters:
+        - name: bookId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Book details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+
+  /inventory:
+    get:
+      tags:
+        - books
+      summary: Get inventory
+      operationId: getInventory
+      responses:
+        '200':
+          description: Current inventory status
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InventoryItem'
+
+  /sales:
+    post:
+      tags:
+        - sales
+      summary: Create a new sale transaction
+      operationId: createSale
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SaleInput'
+      responses:
+        '201':
+          description: Sale created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sale'
+
+components:
+  schemas:
+    ApiError:
+      type: object
+      description: Represents an API error response
+      properties:
+        code:
+          type: string
+          description: Unique error code identifier
+          example: "CATEGORY_NOT_FOUND"
+        details:
+          type: string
+          description: Detailed description of the error
+          example: "Category with ID 123e4567-e89b-12d3-a456-426614174000 was not found"
+
+    Category:
+      type: object
+      description: Represents a book category in the system
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the category
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        name:
+          type: string
+          description: Name of the category
+          example: "Science Fiction"
+        description:
+          type: string
+          description: Detailed description of the category
+          example: "Books featuring futuristic science and technology themes"
+
+    CategoryInput:
+      type: object
+      description: Data transfer object for creating a new category
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: Name for the new category
+          example: "Mystery"
+        description:
+          type: string
+          description: Optional description for the new category
+          example: "Crime and detective novels"
+
+    Book:
+      type: object
+      description: Represents a book in the bookstore inventory
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the book
+          example: "123e4567-e89b-12d3-a456-426614174001"
+        title:
+          type: string
+          description: Title of the book
+          example: "Dune"
+        author:
+          type: string
+          description: Author of the book
+          example: "Frank Herbert"
+        isbn:
+          type: string
+          description: International Standard Book Number
+          example: "978-0441172719"
+        categoryId:
+          type: string
+          description: Reference to the book's category
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        price:
+          type: number
+          format: float
+          description: Price of the book in the default currency
+          example: 19.99
+        quantityInStock:
+          type: integer
+          description: Current quantity available in stock
+          example: 50
+        publishedDate:
+          type: string
+          format: date
+          description: Original publication date of the book
+          example: "1965-08-01"
+
+    BookInput:
+      type: object
+      description: Data transfer object for adding a new book
+      required:
+        - title
+        - author
+        - isbn
+        - categoryId
+        - price
+      properties:
+        title:
+          type: string
+          description: Title of the new book
+          example: "Foundation"
+        author:
+          type: string
+          description: Author of the new book
+          example: "Isaac Asimov"
+        isbn:
+          type: string
+          description: Valid ISBN for the book
+          example: "978-0553293357"
+        categoryId:
+          type: string
+          description: ID of an existing category
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        price:
+          type: number
+          description: Price in the default currency
+          example: 15.99
+        quantityInStock:
+          type: integer
+          description: Initial stock quantity
+          example: 100
+        publishedDate:
+          type: string
+          format: date
+          description: Original publication date
+          example: "1951-05-01"
+
+    InventoryItem:
+      type: object
+      description: Represents the current inventory status of a book
+      properties:
+        bookId:
+          type: string
+          description: Reference to the book
+          example: "123e4567-e89b-12d3-a456-426614174001"
+        title:
+          type: string
+          description: Title of the book (for quick reference)
+          example: "Dune"
+        quantityInStock:
+          type: integer
+          description: Current quantity available
+          example: 42
+        lastRestockDate:
+          type: string
+          format: date-time
+          description: Timestamp of the last restock operation
+          example: "2025-07-24T10:30:00Z"
+
+    SaleInput:
+      type: object
+      description: Data transfer object for creating a new sale
+      required:
+        - bookId
+        - quantity
+      properties:
+        bookId:
+          type: string
+          description: ID of the book being purchased
+          example: "123e4567-e89b-12d3-a456-426614174001"
+        quantity:
+          type: integer
+          description: Number of copies being purchased
+          example: 2
+        customerEmail:
+          type: string
+          description: Optional customer email for notifications
+          example: "customer@example.com"
+
+    Sale:
+      type: object
+      description: Represents a completed or pending sale transaction
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the sale
+          example: "123e4567-e89b-12d3-a456-426614174002"
+        bookId:
+          type: string
+          description: Reference to the sold book
+          example: "123e4567-e89b-12d3-a456-426614174001"
+        quantity:
+          type: integer
+          description: Number of copies sold
+          example: 2
+        totalAmount:
+          type: number
+          description: Total amount for the sale
+          example: 39.98
+        saleDate:
+          type: string
+          format: date-time
+          description: Timestamp of the sale
+          example: "2025-07-24T14:30:00Z"
+        status:
+          type: string
+          enum: [pending, completed, cancelled]
+          description: Current status of the sale
+          example: "completed"
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - bearerAuth: []

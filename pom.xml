@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>3.4.6</version>
+    <relativePath></relativePath>
+    <!-- lookup parent from repository -->
+  </parent>
+  <groupId>com.mycompany</groupId>
+  <artifactId>order-service</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <name>order-service</name>
+  <description>Order Management Service</description>
+  <url></url>
+  <licenses>
+    <license></license>
+  </licenses>
+  <developers>
+    <developer></developer>
+  </developers>
+  <scm>
+    <connection></connection>
+    <developerConnection></developerConnection>
+    <tag></tag>
+    <url></url>
+  </scm>
+  <properties>
+    <java.version>21</java.version>
+    <minimum.coverage>90</minimum.coverage>
+    <openapi-generator-version>7.10.0</openapi-generator-version>
+    <springdoc-openapi-version>2.7.0</springdoc-openapi-version>
+  </properties>
+  <dependencies>
+    <!-- Spring Boot Starters -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-validation</artifactId>
+    </dependency>
+
+    <!-- OpenAPI / Swagger UI -->
+    <dependency>
+      <groupId>org.springdoc</groupId>
+      <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+      <version>${springdoc-openapi-version}</version>
+    </dependency>
+
+    <!-- OpenAPI Generator Annotations -->
+    <dependency>
+      <groupId>org.openapitools</groupId>
+      <artifactId>jackson-databind-nullable</artifactId>
+      <version>0.2.6</version>
+    </dependency>
+    <dependency>
+      <groupId>io.swagger.core.v3</groupId>
+      <artifactId>swagger-annotations</artifactId>
+      <version>2.2.26</version>
+    </dependency>
+
+    <!-- Validation -->
+    <dependency>
+      <groupId>jakarta.validation</groupId>
+      <artifactId>jakarta.validation-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate.validator</groupId>
+      <artifactId>hibernate-validator</artifactId>
+    </dependency>
+
+    <!-- Database - PostgreSQL (can be changed as needed) -->
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+
+    <!-- Kafka (optional - can be removed if not needed) -->
+    <dependency>
+      <groupId>org.springframework.kafka</groupId>
+      <artifactId>spring-kafka</artifactId>
+    </dependency>
+
+    <!-- Lombok -->
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <optional>true</optional>
+    </dependency>
+
+    <!-- Testing -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.kafka</groupId>
+      <artifactId>spring-kafka-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <finalName>order-service</finalName>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>com.diffplug.spotless</groupId>
+          <artifactId>spotless-maven-plugin</artifactId>
+          <version>2.45.0</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
+    <plugins>
+      <!-- OpenAPI Generator Plugin - Generates API interfaces and models from OpenAPI spec -->
+      <plugin>
+        <groupId>org.openapitools</groupId>
+        <artifactId>openapi-generator-maven-plugin</artifactId>
+        <version>${openapi-generator-version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <!-- Path to your OpenAPI specification file -->
+              <inputSpec>D:/projects/test/order-service/src/main/resources/openapi/api-spec.yaml</inputSpec>
+              <generatorName>spring</generatorName>
+              <apiPackage>com.mycompany.api</apiPackage>
+              <modelPackage>com.mycompany.model</modelPackage>
+              <configOptions>
+                <interfaceOnly>true</interfaceOnly>
+                <skipDefaultInterface>true</skipDefaultInterface>
+                <useSpringBoot3>true</useSpringBoot3>
+                <delegatePattern>false</delegatePattern>
+                <useTags>true</useTags>
+                <useJakartaEe>true</useJakartaEe>
+              </configOptions>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Maven Compiler Plugin -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <annotationProcessorPaths>
+            <path>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok</artifactId>
+              <version>1.18.38</version>
+            </path>
+          </annotationProcessorPaths>
+        </configuration>
+      </plugin>
+
+      <!-- Spring Boot Maven Plugin -->
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <exclude>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok</artifactId>
+            </exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+
+      <!-- Maven Surefire Plugin - Test execution -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.1.2</version>
+        <configuration>
+          <includes>
+            <include>**/*Test.java</include>
+            <include>**/*Tests.java</include>
+          </includes>
+          <excludes>
+            <exclude>**/*Application*</exclude>
+            <exclude>**/model/**</exclude>
+            <exclude>**/dto/**</exclude>
+            <exclude>**/api/**</exclude>
+            <exclude>**/config/**</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+
+      <!-- JaCoCo - Code Coverage -->
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.8.10</version>
+        <configuration>
+          <excludes>
+            <exclude>**/*Application*</exclude>
+            <exclude>**/model/**</exclude>
+            <exclude>**/dto/**</exclude>
+            <exclude>**/api/**</exclude>
+            <exclude>**/config/**</exclude>
+            <exclude>**/exception/**</exclude>
+          </excludes>
+        </configuration>
+        <executions>
+          <execution>
+            <id>prepare-agent</id>
+            <goals>
+              <goal>prepare-agent</goal>
+              <goal>report</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>coverage-check</id>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <rule>
+                  <element>BUNDLE</element>
+                  <limits>
+                    <limit>
+                      <counter>LINE</counter>
+                      <value>COVEREDRATIO</value>
+                      <minimum>${minimum.coverage}%</minimum>
+                    </limit>
+                  </limits>
+                </rule>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- SpotBugs - Static Analysis and Security Scanning -->
+      <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>4.9.3.0</version>
+        <configuration>
+          <effort>Max</effort>
+          <threshold>medium</threshold>
+          <failOnError>true</failOnError>
+          <includeFilterFile>${session.executionRootDirectory}/spotbugs-security-include.xml</includeFilterFile>
+          <excludeFilterFile>${session.executionRootDirectory}/spotbugs-security-exclude.xml</excludeFilterFile>
+          <plugins>
+            <plugin>
+              <groupId>com.h3xstream.findsecbugs</groupId>
+              <artifactId>findsecbugs-plugin</artifactId>
+              <version>1.13.0</version>
+            </plugin>
+          </plugins>
+        </configuration>
+        <executions>
+          <execution>
+            <id>spotbugs-check</id>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <phase>verify</phase>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Spotless - Code Formatting -->
+      <plugin>
+        <groupId>com.diffplug.spotless</groupId>
+        <artifactId>spotless-maven-plugin</artifactId>
+        <version>2.41.1</version>
+        <configuration>
+          <formats>
+            <format>
+              <includes>
+                <include>.gitignore</include>
+              </includes>
+              <trimTrailingWhitespace></trimTrailingWhitespace>
+              <endWithNewline></endWithNewline>
+              <indent>
+                <tabs>true</tabs>
+                <spacesPerTab>4</spacesPerTab>
+              </indent>
+            </format>
+          </formats>
+          <markdown>
+            <includes>
+              <include>**/*.md</include>
+            </includes>
+            <flexmark></flexmark>
+          </markdown>
+          <java>
+            <includes>
+              <include>src/main/java/**/*.java</include>
+              <include>src/test/java/**/*.java</include>
+              <include>src/it/java/**/*.java</include>
+            </includes>
+            <excludes>
+              <exclude>target/**</exclude>
+            </excludes>
+            <removeUnusedImports></removeUnusedImports>
+            <googleJavaFormat>
+              <style>GOOGLE</style>
+              <reflowLongStrings>true</reflowLongStrings>
+            </googleJavaFormat>
+          </java>
+          <pom>
+            <sortPom>
+              <encoding>UTF-8</encoding>
+              <lineSeparator>${line.separator}</lineSeparator>
+              <expandEmptyElements>true</expandEmptyElements>
+              <spaceBeforeCloseEmptyElement>false</spaceBeforeCloseEmptyElement>
+              <keepBlankLines>true</keepBlankLines>
+              <nrOfIndentSpace>2</nrOfIndentSpace>
+              <indentBlankLines>false</indentBlankLines>
+              <indentSchemaLocation>false</indentSchemaLocation>
+              <predefinedSortOrder>recommended_2008_06</predefinedSortOrder>
+              <sortProperties>true</sortProperties>
+              <sortModules>true</sortModules>
+              <sortExecutions>true</sortExecutions>
+            </sortPom>
+          </pom>
+        </configuration>
+        <executions>
+          <execution>
+            <id>spotless-check</id>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <phase>verify</phase>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
+

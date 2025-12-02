@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+  <!-- Exclude test cases and demo code -->
+  <Match>
+    <Class name="~.*\.test\..*" />
+  </Match>
+  <Match>
+    <Class name="~.*Demo.*" />
+  </Match>
+  
+  <!-- Exclude auto-generated OpenAPI code -->
+  <Match>
+    <Package name="~.*\.api.*" />
+  </Match>
+  <Match>
+    <Package name="~.*\.model.*" />
+  </Match>
+  
+  <!-- Add custom exclusions below as needed -->
+</FindBugsFilter>
+

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+  <!-- Include high-priority security-related bug patterns -->
+  <Match>
+    <Bug pattern="SQL_INJECTION_JDBC"/>
+  </Match>
+  <Match>
+    <Bug pattern="XSS_REQUEST_PARAMETER_TO_SEND_ERROR"/>
+  </Match>
+  <Match>
+    <Bug pattern="HARD_CODE_PASSWORD"/>
+  </Match>
+  <Match>
+    <Bug pattern="PATH_TRAVERSAL_IN"/>
+  </Match>
+  <Match>
+    <Bug pattern="LDAP_INJECTION"/>
+  </Match>
+  <Match>
+    <Bug pattern="COMMAND_INJECTION"/>
+  </Match>
+  <Match>
+    <Bug pattern="UNVALIDATED_REDIRECT"/>
+  </Match>
+</FindBugsFilter>
+
