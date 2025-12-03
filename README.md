@@ -4,7 +4,7 @@ ${serviceDescription}
 
 This project was generated using the **Spring Boot OpenAPI Service Archetype**, which provides a comprehensive microservice skeleton with:
 
-- ✅ OpenAPI 3.0 specification support with automatic code generation
+- ✅ OpenAPI 3.0 specification support with automatic code generation1
 - ✅ Spring Boot 3.4.6 with Java 21
 - ✅ Comprehensive testing setup (Unit & Integration tests)
 - ✅ Code quality tools (Spotless with Google Java Format)
