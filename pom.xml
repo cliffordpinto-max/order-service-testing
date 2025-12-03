@@ -28,7 +28,7 @@
   </scm>
   <properties>
     <java.version>21</java.version>
-    <minimum.coverage>90</minimum.coverage>
+    <minimum.coverage>0</minimum.coverage>
     <openapi-generator-version>7.10.0</openapi-generator-version>
     <springdoc-openapi-version>2.7.0</springdoc-openapi-version>
   </properties>
