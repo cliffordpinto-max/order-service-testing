@@ -15,9 +15,9 @@ import org.springframework.test.web.servlet.MockMvc;
 
 /**
  * Unit tests for SampleController.
- * 
- * <p>DELETE THIS test once you start implementing your own controllers.
- * Write tests for your OpenAPI-generated endpoints instead.
+ *
+ * <p>DELETE THIS test once you start implementing your own controllers. Write tests for your
+ * OpenAPI-generated endpoints instead.
  */
 @WebMvcTest(SampleController.class)
 class SampleControllerTest {
@@ -40,4 +40,3 @@ class SampleControllerTest {
         .andExpect(jsonPath("$.status").value("SUCCESS"));
   }
 }
-

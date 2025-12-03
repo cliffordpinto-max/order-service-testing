@@ -10,17 +10,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Sample REST controller.
- * 
- * This is a plain Spring REST controller that can be used as a reference.
- * Replace this with your own controllers that implement the API interfaces
- * generated from your OpenAPI specification.
- * 
+ *
+ * <p>This is a plain Spring REST controller that can be used as a reference. Replace this with your
+ * own controllers that implement the API interfaces generated from your OpenAPI specification.
+ *
  * <p>After defining your API in src/main/resources/openapi/api-spec.yaml:
+ *
  * <ol>
- *   <li>Run: ./mvnw clean compile</li>
- *   <li>API interfaces will be generated in target/generated-sources/openapi/.../api/</li>
- *   <li>Model classes will be generated in target/generated-sources/openapi/.../model/</li>
- *   <li>Create controllers that implement the generated API interfaces</li>
+ *   <li>Run: ./mvnw clean compile
+ *   <li>API interfaces will be generated in target/generated-sources/openapi/.../api/
+ *   <li>Model classes will be generated in target/generated-sources/openapi/.../model/
+ *   <li>Create controllers that implement the generated API interfaces
  * </ol>
  */
 @RestController
@@ -35,8 +35,8 @@ public class SampleController {
   }
 
   /**
-   * Sample endpoint - DELETE THIS and replace with your own endpoints
-   * that implement OpenAPI-generated interfaces.
+   * Sample endpoint - DELETE THIS and replace with your own endpoints that implement
+   * OpenAPI-generated interfaces.
    */
   @GetMapping("/sample")
   public ResponseEntity<SampleResponseDto> getSample() {
@@ -44,4 +44,3 @@ public class SampleController {
     return ResponseEntity.ok(response);
   }
 }
-

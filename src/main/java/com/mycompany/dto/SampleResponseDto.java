@@ -4,12 +4,12 @@ import java.time.LocalDateTime;
 
 /**
  * Sample DTO (Data Transfer Object).
- * 
- * <p>This is a simple DTO for demonstration purposes.
- * DELETE THIS class once you start using OpenAPI-generated models.
- * 
- * <p>Your OpenAPI specification will generate model classes automatically.
- * Use those generated models in your controllers instead of creating DTOs manually.
+ *
+ * <p>This is a simple DTO for demonstration purposes. DELETE THIS class once you start using
+ * OpenAPI-generated models.
+ *
+ * <p>Your OpenAPI specification will generate model classes automatically. Use those generated
+ * models in your controllers instead of creating DTOs manually.
  */
 public class SampleResponseDto {
 
@@ -51,4 +51,3 @@ public class SampleResponseDto {
     this.timestamp = timestamp;
   }
 }
-

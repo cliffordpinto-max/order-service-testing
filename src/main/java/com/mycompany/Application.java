@@ -5,10 +5,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * Main Spring Boot Application class for order-service.
- * 
- * This application is generated from the Spring Boot OpenAPI Service Archetype
- * and includes auto-configuration for OpenAPI code generation, security scanning,
- * code formatting, and comprehensive testing.
+ *
+ * <p>This application is generated from the Spring Boot OpenAPI Service Archetype and includes
+ * auto-configuration for OpenAPI code generation, security scanning, code formatting, and
+ * comprehensive testing.
  */
 @SpringBootApplication
 public class Application {
@@ -17,4 +17,3 @@ public class Application {
     SpringApplication.run(Application.class, args);
   }
 }
-

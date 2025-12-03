@@ -75,6 +75,7 @@ This will:
 ### Location
 
 The OpenAPI specification is located at:
+
 ```
 src/main/resources/openapi/api-spec.yaml
 ```
@@ -151,11 +152,13 @@ The application will start on: `http://localhost:${servicePort}${contextPath}`
 ### Different Profiles
 
 #### Local Profile (default)
+
 ```bash
 ./mvnw spring-boot:run -Dspring-boot.run.profiles=local
 ```
 
 #### Deployment Profile
+
 ```bash
 ./mvnw spring-boot:run -Dspring-boot.run.profiles=deployment
 ```
@@ -193,11 +196,13 @@ To modify the threshold, edit the `minimum.coverage` property in `pom.xml`:
 ### Code Formatting (Spotless)
 
 Check code formatting:
+
 ```bash
 ./mvnw spotless:check
 ```
 
 Auto-fix formatting issues:
+
 ```bash
 ./mvnw spotless:apply
 ```
@@ -207,11 +212,13 @@ The project uses **Google Java Format** style.
 ### Security Scanning (SpotBugs)
 
 Run security scan:
+
 ```bash
 ./mvnw spotbugs:check
 ```
 
 Generate detailed report:
+
 ```bash
 ./mvnw spotbugs:spotbugs
 ```

@@ -9,9 +9,9 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * OpenAPI/Swagger configuration.
- * 
- * Configures Swagger UI documentation for the API.
- * Access at: http://localhost:8081/order-service/swagger-ui.html
+ *
+ * <p>Configures Swagger UI documentation for the API. Access at:
+ * http://localhost:8081/order-service/swagger-ui.html
  */
 @Configuration
 public class OpenApiConfig {
@@ -29,7 +29,9 @@ public class OpenApiConfig {
                         .name("API Support")
                         .email("support@example.com")
                         .url("https://example.com"))
-                .license(new License().name("Apache 2.0").url("https://www.apache.org/licenses/LICENSE-2.0")));
+                .license(
+                    new License()
+                        .name("Apache 2.0")
+                        .url("https://www.apache.org/licenses/LICENSE-2.0")));
   }
 }
-

@@ -11,9 +11,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 /**
  * Unit tests for SampleServiceImpl.
- * 
- * <p>DELETE THIS test once you start implementing your own services.
- * Write tests for your actual business logic instead.
+ *
+ * <p>DELETE THIS test once you start implementing your own services. Write tests for your actual
+ * business logic instead.
  */
 @ExtendWith(MockitoExtension.class)
 class SampleServiceImplTest {
@@ -32,4 +32,3 @@ class SampleServiceImplTest {
     assertNotNull(response.getTimestamp());
   }
 }
-
