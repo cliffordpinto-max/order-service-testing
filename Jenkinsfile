@@ -1,5 +1,5 @@
 pipeline {
-  agent { label 'java-microservice' }
+  agent { label 'jdk21' }
 
   environment {
     MAVEN_OPTS = '-Xmx1024m'
