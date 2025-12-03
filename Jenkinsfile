@@ -21,7 +21,7 @@ pipeline {
 
     stage('Unit Tests & Build') {
       steps {
-        sh 'mvn -B -s settings.xml clean verify'   // supply settings.xml if you need private repos
+        sh 'mvn clean verify' 
       }
       post {
         always {
