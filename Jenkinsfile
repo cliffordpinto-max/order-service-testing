@@ -44,8 +44,8 @@ pipeline {
       steps {
         script {
           // Option A: if docker socket is mounted (fast)
-          sh "docker build -t ${IMAGE_NAME}:${env.BUILD_NUMBER} ."
-          sh "docker tag ${IMAGE_NAME}:${env.BUILD_NUMBER} ${IMAGE_NAME}:latest"
+          sh "podman build -t ${IMAGE_NAME}:${env.BUILD_NUMBER} ."
+          sh "podman tag ${IMAGE_NAME}:${env.BUILD_NUMBER} ${IMAGE_NAME}:latest"
           // Optional push (requires registry credentials configured in Jenkins)
           // withCredentials([...]) { sh "docker login ...; docker push ..." }
         }
