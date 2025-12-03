@@ -1,5 +1,5 @@
 pipeline {
-  agent { label 'jdk21' }
+  agent { name 'java21-agent' }
 
   environment {
     MAVEN_OPTS = '-Xmx1024m'
