@@ -1,82 +1,68 @@
 pipeline {
-    agent any
+  agent { label 'java-microservice' }
 
-    environment {
-        REGISTRY = "docker.io"
-        IMAGE_NAME = "cliffordpinto/order-service"
-        IMAGE_TAG = "${env.BUILD_NUMBER}"
-        REGISTRY_CREDENTIALS = "dockerhub-creds"
-        JAVA_HOME = "${tool 'jdk21'}"
-        PATH = "${env.JAVA_HOME}/bin:${env.PATH}"
+  environment {
+    MAVEN_OPTS = '-Xmx1024m'
+    REGISTRY = 'myregistry.local'
+    IMAGE_NAME = "${REGISTRY}/${env.JOB_NAME.toLowerCase()}"
+  }
+
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '20'))
+    timestamps()
+    ansiColor('xterm')
+  }
+
+  stages {
+    stage('Checkout') {
+      steps {
+        checkout scm
+      }
     }
 
-    stages {
-
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
+    stage('Unit Tests & Build') {
+      steps {
+        sh 'mvn -B -s settings.xml clean verify'   // supply settings.xml if you need private repos
+      }
+      post {
+        always {
+          junit '**/target/surefire-reports/*.xml'
+          archiveArtifacts allowEmptyArchive: true, artifacts: '**/target/*.jar, **/target/*.war', fingerprint: true
         }
-
-        stage('Build & Test') {
-            steps {
-                sh 'mvn -B clean install'
-            }
-            post {
-                always {
-                    junit '**/target/surefire-reports/*.xml'
-                }
-            }
-        }
-
-        stage('Static Analysis (SonarQube)') {
-            when { expression { return false } } // disable for now unless you use Sonar
-            steps {
-                withSonarQubeEnv('sonar-server') {
-                    sh """
-                        mvn sonar:sonar \
-                        -Dsonar.projectKey=my-microservice \
-                        -Dsonar.host.url=\${SONAR_HOST_URL} \
-                        -Dsonar.login=\${SONAR_AUTH_TOKEN}
-                    """
-                }
-            }
-        }
-
-        stage('Build Docker Image') {
-            steps {
-                sh """
-                    docker build -t $REGISTRY/$IMAGE_NAME:$IMAGE_TAG .
-                    docker tag $REGISTRY/$IMAGE_NAME:$IMAGE_TAG $REGISTRY/$IMAGE_NAME:latest
-                """
-            }
-        }
-
-        stage('Push to Registry') {
-            steps {
-                withCredentials([usernamePassword(credentialsId: "${REGISTRY_CREDENTIALS}", usernameVariable: 'USER', passwordVariable: 'PASS')]) {
-                    sh """
-                        echo "$PASS" | docker login -u "$USER" --password-stdin $REGISTRY
-                        docker push $REGISTRY/$IMAGE_NAME:$IMAGE_TAG
-                        docker push $REGISTRY/$IMAGE_NAME:latest
-                    """
-                }
-            }
-        }
-
-        stage('Archive Artifacts') {
-            steps {
-                archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
-            }
-        }
+      }
     }
 
-    post {
-        success {
-            echo "Build successful. Docker image pushed as $REGISTRY/$IMAGE_NAME:$IMAGE_TAG"
-        }
-        failure {
-            echo "Build failed!"
-        }
+    stage('Package') {
+      steps {
+        sh 'mvn -B -DskipTests package'
+      }
     }
+
+    stage('Build Docker Image') {
+      when {
+        expression { return fileExists('Dockerfile') }   // only if repo has Dockerfile
+      }
+      steps {
+        script {
+          // Option A: if docker socket is mounted (fast)
+          sh "docker build -t ${IMAGE_NAME}:${env.BUILD_NUMBER} ."
+          sh "docker tag ${IMAGE_NAME}:${env.BUILD_NUMBER} ${IMAGE_NAME}:latest"
+          // Optional push (requires registry credentials configured in Jenkins)
+          // withCredentials([...]) { sh "docker login ...; docker push ..." }
+        }
+      }
+    }
+  }
+
+  post {
+    success {
+      echo "Build succeeded: ${env.BUILD_NUMBER}"
+    }
+    failure {
+      echo "Build failed"
+    }
+    cleanup {
+      cleanWs()
+    }
+  }
 }
