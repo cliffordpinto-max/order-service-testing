@@ -10,7 +10,6 @@ pipeline {
   options {
     buildDiscarder(logRotator(numToKeepStr: '20'))
     timestamps()
-    ansiColor('xterm')
   }
 
   stages {
